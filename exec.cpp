@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-Exec::Exec(string files_folder, string output_folder, string input_folder){
+Exec::Exec(string& files_folder, string& output_folder, string& input_folder){
     this ->files_folder = files_folder;
     this ->output_folder = output_folder;
     this ->input_folder = input_folder;
@@ -30,7 +30,8 @@ static inline void traverse_exec(string& folder, string& out_folder, string& fil
         //如果是普通的文件
         if(input_file->d_type == 8){
             string file_path = folder + "/" + input_file_name;
-            system(("timeout 10 ./a.out <" + file_path +" >" + out_folder + "/" + file_name + "/" + input_file ->d_name).c_str());
+            system(("timeout 10s ./_a.out <" + file_path +" >" + out_folder + "/" + file_name + "/" + input_file ->d_name
+                +" 2>&1").c_str());
         }
 }
 }
@@ -64,11 +65,13 @@ void Exec::exec_all(){
             string file_name(file->d_name);
             string file_path = files_folder + "/" + file_name;
             if (file->d_name[strlen(file->d_name) - 1] == 'p'){//cpp
-                system(("g++ " + file_path + " -o " + "a.out").c_str());
-            }else{
-                system(("gcc " + file_path + " -o " + "a.out").c_str());
+                system(("g++ -w " + file_path + " -o " + "_a.out").c_str());
+                traverse_exec(input_folder, output_folder, file_name);
+            }else if (file->d_name[strlen(file->d_name) - 1] == 'c'){
+                system(("gcc -w " + file_path + " -o " + "_a.out").c_str());
+                traverse_exec(input_folder, output_folder, file_name);
             }
-            traverse_exec(input_folder, output_folder, file_name);
+            
         }
         //如果是文件夹
         if(file->d_type == 4){

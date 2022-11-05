@@ -31,5 +31,5 @@ class Gen_Input{
         vector<Input_Form> form_vector;
     public:
         void gen_input();
-        Gen_Input(string source, string dest);
+        Gen_Input(string& source, string& dest);
 };

@@ -59,6 +59,7 @@ void Compare::compare_all(){
 
     while((file = readdir(d)) != NULL){
         // 跳过隐藏文件, 当前目录(.),或上一级目录
+        //cout<<file->d_name<<endl;
         if(strncmp(file->d_name, ".", 1) == 0)
             continue;
         //如果是普通的文件
@@ -74,9 +75,9 @@ void Compare::compare_all(){
         }
     }
     ofstream eq_stream;
-    eq_stream.open(eq_output, ios::out);
+    eq_stream.open(eq_output, ios::app);
     ofstream neq_stream;
-    neq_stream.open(neq_output, ios::out);
+    neq_stream.open(neq_output, ios::app);
     for(int i = 0; i< all_dir.size(); i++){
         for(int j = i+1; j< all_dir.size(); j++){
             if(Compare_code(compare_folder+"/"+all_dir[i], compare_folder+"/"+all_dir[j])){

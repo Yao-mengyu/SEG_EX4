@@ -11,10 +11,11 @@
 //srand(time(nullptr));//设置随机数种子【记得放进调用前】
 //rand();//产生一个随机数
 
-Gen_Input::Gen_Input(string source, string dest) {
+Gen_Input::Gen_Input(string& source, string& dest) {
             this-> data_source = source;
             this -> input_folder = dest;
 }
+
 
 //----------------------------------------辅助函数（找形式中的num并存储在 vector a 中）----------------------------------------------------//
 static inline void find_number(string& str, vector<int>& a, int start_pos){
@@ -68,9 +69,13 @@ int Gen_Input::gen_rand_int(int a, int b){
 
 void Gen_Input::analyze_form(){
    ifstream ifs(data_source);
+   if(!ifs){
+      cout<<"No form file!"<<endl;
+      return;
+   }
    string str;
    while(ifs >> str){
-      cout<<str<<endl;//for debug
+    //  cout<<str<<endl;//for debug
       switch (str[0])
       {
       case 'i':
@@ -112,7 +117,7 @@ void Gen_Input::analyze_form(){
 //------------------------------------------------公有函数，生成过程（生成TEST_NUM个测试用例）-------------------------------------------------//
 void Gen_Input::gen_input(){
    analyze_form();
-   string dir_name  = input_folder + "Tests";
+   string dir_name  = input_folder;
    if (access(dir_name.c_str(), 0) == -1){
      // cout<< "Error: cannot create test_folder!\n";
       //assert(0);
@@ -120,7 +125,7 @@ void Gen_Input::gen_input(){
    }
    for(int i = 0; i< TEST_NUM; i++){
       ofstream ofs;  
-      ofs.open(input_folder + "Tests/test" + to_string(i) + ".txt", ios::out);
+      ofs.open(input_folder + "/test" + to_string(i) + ".txt", ios::out);
       if(!ofs){
          cout<<"Error: cannot create ofs!\n";
          assert(0);
