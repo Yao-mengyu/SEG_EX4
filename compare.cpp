@@ -7,7 +7,7 @@
 #include <iterator>
 #include <vector>
 
-Compare::Compare(string& prefix_path, string& compare_folder, string& eq_output, string& neq_output){
+Compare::Compare(const string& prefix_path, const string& compare_folder, const string& eq_output, const string& neq_output){
     this ->prefix_path = prefix_path;
     this ->compare_folder = compare_folder;
     this ->eq_output = eq_output;
@@ -21,10 +21,12 @@ static inline bool compareFiles(const string& p1, const string& p2) {
   ifstream f2(p2, ifstream::binary|ifstream::ate);
 
   if (f1.fail() || f2.fail()) {
+    //cout<<"?"<<p1<<p2<<endl;
     return false; //file problem
   }
 
   if (f1.tellg() != f2.tellg()) {
+   // cout<<"!"<<p1<<p2<<endl;
     return false; //size mismatch
   }
 
@@ -66,7 +68,7 @@ void Compare::compare_all(){
         //如果是文件夹
         if(file->d_type == 4){
             string folder_name(file->d_name);
-            string folder_path = compare_folder+"/"+folder_name;
+            string folder_path = folder_name;
            // DIR *d = opendir(folder_path.c_str());
             all_dir.emplace_back(folder_path);
         }
@@ -76,8 +78,8 @@ void Compare::compare_all(){
     ofstream neq_stream;
     neq_stream.open(neq_output, ios::out);
     for(int i = 0; i< all_dir.size(); i++){
-        for(int j = 0; j< all_dir.size(); j++){
-            if(Compare_code(all_dir[i], all_dir[j])){
+        for(int j = i+1; j< all_dir.size(); j++){
+            if(Compare_code(compare_folder+"/"+all_dir[i], compare_folder+"/"+all_dir[j])){
                 eq_stream<<(prefix_path+"/"+all_dir[i]+","+prefix_path+"/"+all_dir[j])<<endl;
             }else{
                 neq_stream<<(prefix_path+"/"+all_dir[i]+","+prefix_path+"/"+all_dir[j])<<endl;

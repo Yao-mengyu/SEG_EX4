@@ -10,8 +10,8 @@ class Compare{
         string compare_folder;
         string eq_output;
         string neq_output;
-        vector<string&> all_dir;//待比较的输出数据文件夹
+        vector<string> all_dir;//待比较的输出数据文件夹
     public:
-        Compare(string& prefix_path, string& compare_folder, string& eq_output, string& neq_output);
+        Compare(const string& prefix_path, const string& compare_folder, const string& eq_output, const string& neq_output);
         void compare_all();
 };
