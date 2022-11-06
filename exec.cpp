@@ -30,7 +30,7 @@ static inline void traverse_exec(string& folder, string& out_folder, string& fil
         //如果是普通的文件
         if(input_file->d_type == 8){
             string file_path = folder + "/" + input_file_name;
-            system(("timeout 10s ./_a.out <" + file_path +" >" + out_folder + "/" + file_name + "/" + input_file ->d_name
+            system(("timeout 5s ./_a.out <" + file_path +" >" + out_folder + "/" + file_name + "/" + input_file ->d_name
                 +" 2>&1").c_str());
         }
 }
