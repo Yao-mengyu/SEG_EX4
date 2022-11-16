@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
             #ifdef Self_recycle
                 system(("rm -r " + gen_path).c_str());
                 system(("rm -r " + output_path).c_str());
-                system("rm _a.out");
+                //system("rm _a.out");
             #endif
         }
     }

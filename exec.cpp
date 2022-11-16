@@ -32,6 +32,7 @@ static inline void traverse_exec(string& folder, string& out_folder, string& fil
             string file_path = folder + "/" + input_file_name;
             system(("timeout 5s ./_a.out <" + file_path +" >" + out_folder + "/" + file_name + "/" + input_file ->d_name
                 +" 2>&1").c_str());
+            unlink("_a.out");
         }
 }
 }
@@ -64,6 +65,7 @@ void Exec::exec_all(){
            // printf("%s\n", file->d_name);
             string file_name(file->d_name);
             string file_path = files_folder + "/" + file_name;
+          //  int ret =0;
             if (file->d_name[strlen(file->d_name) - 1] == 'p'){//cpp
                 system(("g++ -w " + file_path + " -o " + "_a.out").c_str());
                 traverse_exec(input_folder, output_folder, file_name);
