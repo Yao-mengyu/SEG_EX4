@@ -21,14 +21,15 @@ int main(int argc, char* argv[]){
         cout<< "Cannot open the input files folder" <<endl;
         return 0;
     }
-    struct dirent* file = new dirent();
-    if (access("output", 0) == -1){
-        mkdir("output", S_IRWXU | S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
+    string output_dir = "output";
+    if(argc >=3 ) output_dir = argv[2];
+    if (access(output_dir.c_str(), 0) == -1){
+        mkdir(output_dir.c_str(), S_IRWXU | S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
     }
-    unlink("output/equal.csv");
-    unlink("output/inequal.csv");
-    string output_eq = "output/equal.csv";
-    string output_neq = "output/inequal.csv";
+    unlink((output_dir + "/equal.csv").c_str());
+    unlink((output_dir + "/inequal.csv").c_str());
+    string output_eq = output_dir + "/equal.csv";
+    string output_neq = output_dir + "/inequal.csv";
     ofstream eq_stream;
     eq_stream.open(output_eq, ios::app);
     eq_stream<<("file1,file2")<<endl;
@@ -43,16 +44,12 @@ int main(int argc, char* argv[]){
     if (access("outcome", 0) == -1){
         mkdir("outcome", S_IRWXU | S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
     }
-
+    struct dirent* file;
     while((file = readdir(input_d)) != NULL){
         // 跳过隐藏文件, 当前目录(.),或上一级目录
         if(strncmp(file->d_name, ".", 1) == 0)
             continue;
-        //如果是普通的文件
-        if(file->d_type == 8){
-            
-        }
-        
+
         //如果是文件夹
         if(file->d_type == 4){
             string folder_name(file->d_name);

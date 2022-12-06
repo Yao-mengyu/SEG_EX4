@@ -1,0 +1,9 @@
+Historically, googletest started to use the term Test Case for grouping related tests, whereas current publications, including International Software Testing Qualifications Board (ISTQB) materials and various textbooks on software quality, use the term Test Suite for this.
+
+The related term Test, as it is used in googletest, corresponds to the term Test Case of ISTQB and others.
+
+The term Test is commonly of broad enough sense, including ISTQB’s definition of Test Case, so it’s not much of a problem here. But the term Test Case as was used in Google Test is of contradictory sense and thus confusing.
+
+googletest recently started replacing the term Test Case with Test Suite. The preferred API is TestSuite. The older TestCase API is being slowly deprecated and refactored away.
+
+So please be aware of the different definitions of the terms:

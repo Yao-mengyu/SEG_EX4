@@ -53,6 +53,7 @@ char Gen_Input::gen_rand_char(){
 }
 
 string Gen_Input::gen_rand_string(int a, int b){
+   if(a > b) throw std::runtime_error("false length range in gen_rand_string");
    int len = (rand()%(b - a + 1)) + a;
    string s ="";
    for(int i = 0; i< len; i++){
@@ -63,6 +64,7 @@ string Gen_Input::gen_rand_string(int a, int b){
 }
 
 int Gen_Input::gen_rand_int(int a, int b){
+   if(a > b) throw std::runtime_error("false range in gen_rand_int");
    return (rand()%(b - a + 1)) + a;
 }
 
@@ -70,18 +72,25 @@ int Gen_Input::gen_rand_int(int a, int b){
 void Gen_Input::analyze_form(){
    ifstream ifs(data_source);
    if(!ifs){
-      cout<<"No form file!"<<endl;
-      return;
+     
+      throw std::runtime_error("No form file!");
+      //return;
    }
    string str;
    while(ifs >> str){
     //  cout<<str<<endl;//for debug
+    //string str_j = str.c_str();
+    if(str.substr(0, 3)!= "int" && str.substr(0, 4) != "char" && str.substr(0, 6) != "string")
+      throw std::runtime_error("wrong form!");
+     // cout<<str;
       switch (str[0])
       {
       case 'i':
       {
          vector<int> a;
          find_number(str, a, 4); //int()
+        // cout<<a.size()<<" "<<a[0]<<" "<<a[1]<<endl;
+         if(a.size() != 2) throw std::runtime_error("false form of int(a, b)");
          struct Input_Form new_form = Input_Form();
          new_form.kind = Int;
          new_form.int_range = make_pair(a[0], a[1]);
@@ -101,6 +110,7 @@ void Gen_Input::analyze_form(){
       {
          vector<int> a;
          find_number(str, a, 7); // string()
+         if(a.size() != 2) throw std::runtime_error("false form of string(a, b)");
          struct Input_Form new_form = Input_Form();
          new_form.kind = String;
          new_form.string_length = make_pair(a[0], a[1]);
@@ -108,7 +118,9 @@ void Gen_Input::analyze_form(){
          break;
       }
       default:
-         assert(0);
+         struct Input_Form new_form = Input_Form();
+         new_form.kind = Unknown;
+         form_vector.emplace_back(new_form);
          break;
       }
    }
@@ -127,8 +139,7 @@ void Gen_Input::gen_input(){
       ofstream ofs;  
       ofs.open(input_folder + "/test" + to_string(i) + ".txt", ios::out);
       if(!ofs){
-         cout<<"Error: cannot create ofs!\n";
-         assert(0);
+         throw std::runtime_error("Error: cannot create ofs!\n");
       }
       for(auto form: form_vector){
          switch (form.kind)

@@ -1,0 +1,10 @@
+file1,file2
+./Union_test/input1/hello/in_out.c,./Union_test/input1/hello/inout_noline.cpp
+./Union_test/input1/hello/in_out.c,./Union_test/input1/hello/hello_world.cpp
+./Union_test/input1/hello/in_out.c,./Union_test/input1/hello/corrupt.cpp
+./Union_test/input1/hello/inout_noline.cpp,./Union_test/input1/hello/hello_world.cpp
+./Union_test/input1/hello/inout_noline.cpp,./Union_test/input1/hello/in_out.cpp
+./Union_test/input1/hello/inout_noline.cpp,./Union_test/input1/hello/corrupt.cpp
+./Union_test/input1/hello/hello_world.cpp,./Union_test/input1/hello/in_out.cpp
+./Union_test/input1/hello/hello_world.cpp,./Union_test/input1/hello/corrupt.cpp
+./Union_test/input1/hello/in_out.cpp,./Union_test/input1/hello/corrupt.cpp

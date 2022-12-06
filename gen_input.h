@@ -5,7 +5,7 @@ using namespace std;
 #define TEST_NUM 10
 
 enum Input_Kind{
-    Int, Char, String
+    Int, Char, String, Unknown
 };
 
 class Input_Form{

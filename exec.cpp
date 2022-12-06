@@ -15,13 +15,14 @@ Exec::Exec(string& files_folder, string& output_folder, string& input_folder){
 static inline void traverse_exec(string& folder, string& out_folder, string& file_name){
     DIR *d_input;
     if(!(d_input = opendir(folder.c_str()))){
-        cout<<"Cannot open the input files folder"<<endl;
-        return;
+        throw std::runtime_error("Cannot open the input files folder");
+       // return;
     }
-    struct dirent* input_file = new dirent();
+    
     if(access((out_folder + "/" + file_name).c_str(), 0) == -1){
         mkdir((out_folder + "/" + file_name).c_str(), S_IRWXU | S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
     }
+    struct dirent* input_file;
     while((input_file = readdir(d_input)) != NULL){
         // 跳过隐藏文件, 当前目录(.),或上一级目录
         string input_file_name(input_file->d_name);
@@ -32,19 +33,20 @@ static inline void traverse_exec(string& folder, string& out_folder, string& fil
             string file_path = folder + "/" + input_file_name;
             system(("timeout 5s ./_a.out <" + file_path +" >" + out_folder + "/" + file_name + "/" + input_file ->d_name
                 +" 2>&1").c_str());
-            unlink("_a.out");
+           // unlink("_a.out");
         }
-}
+    }
+    unlink("_a.out");
 }
 
 void Exec::exec_all(){
     
     DIR *d;
     if(!(d = opendir(files_folder.c_str()))){
-        cout<<"Cannot open the files folder"<<endl;
-        return;
+        throw std::runtime_error("Cannot open the files folder");
+       // return;
     }
-    struct dirent* file = new dirent();
+    
     if(access((output_folder).c_str(), 0) == -1){
         mkdir((output_folder).c_str(), S_IRWXU | S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);
     }
@@ -56,6 +58,7 @@ void Exec::exec_all(){
             return;
         }
     }*/
+    struct dirent* file;
     while((file = readdir(d)) != NULL){
         // 跳过隐藏文件, 当前目录(.),或上一级目录
         if(strncmp(file->d_name, ".", 1) == 0)
@@ -74,9 +77,6 @@ void Exec::exec_all(){
                 traverse_exec(input_folder, output_folder, file_name);
             }
             
-        }
-        //如果是文件夹
-        if(file->d_type == 4){
         }
     }
     closedir(d);

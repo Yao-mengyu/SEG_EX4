@@ -21,6 +21,7 @@ static inline bool compareFiles(const string& p1, const string& p2) {
   ifstream f2(p2, ifstream::binary|ifstream::ate);
 
   if (f1.fail() || f2.fail()) {
+    if(f1.fail() && f2.fail()) return true;
     //cout<<"?"<<p1<<p2<<endl;
     return false; //file problem
   }
@@ -52,20 +53,16 @@ void Compare::compare_all(){
     DIR *d;
     
     if(!(d = opendir(compare_folder.c_str()))){
-        cout<<"cannot open compare_folder"<<endl;
-        return;
+        throw std::runtime_error("cannot open compare_folder");
+        //return;
     }
-    struct dirent* file = new dirent();
+    struct dirent* file;
 
     while((file = readdir(d)) != NULL){
         // 跳过隐藏文件, 当前目录(.),或上一级目录
         //cout<<file->d_name<<endl;
         if(strncmp(file->d_name, ".", 1) == 0)
             continue;
-        //如果是普通的文件
-        if(file->d_type == 8){
-            
-        }
         //如果是文件夹
         if(file->d_type == 4){
             string folder_name(file->d_name);
